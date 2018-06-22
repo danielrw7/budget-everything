@@ -19,14 +19,14 @@
                 type="number"
                 @keyup.enter="save" />
             <span :title="transaction.value" v-else>
-                {{ format(transaction.value) }}
+                {{ formattedValue }}
             </span>
         </td>
     </tr>
 </template>
 
 <script>
-import { formats } from '@/numberFormat'
+import { format } from '@/numberFormat'
 
 export default {
     name: 'TransactionRow',
@@ -56,10 +56,14 @@ export default {
             this.startEditing()
         }
     },
+    computed: {
+        formattedValue() {
+            return format(this.transaction.value, this.budget, {
+                category: this.category
+            })
+        }
+    },
     methods: {
-        format(value) {
-            return formats[this.budget.formatType || 'integer'](value)
-        },
         startEditing(target) {
             this.editing = true
             this.$nextTick(() => {

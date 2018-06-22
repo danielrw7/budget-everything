@@ -20,3 +20,25 @@ body, body * {
     display: table;
 }
 
+table {
+    input {
+        margin: 0;
+    }
+
+    &.no-bottom-border {
+        tr:last-child {
+            th, td {
+                border-width: 0;
+            }
+        }
+    }
+}
+
+button.button-primary {
+    &:focus:not(:hover) {
+        background-color: $primary-color;
+    }
+    &:active {
+        background-color: darken($link-color, 5%);
+    }
+}

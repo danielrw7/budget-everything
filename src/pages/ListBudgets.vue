@@ -6,11 +6,6 @@
             </div>
 
             <input v-model="budgetID" type="text" />
-            <select v-model="formatType">
-                <option v-for="(type, i) in formatTypes" :key="i" :value="type">
-                    {{ type }}
-                </option>
-            </select>
             <button @click="addBudget" class="button-primary">Add</button>
         </div>
         <div v-else>Loading...</div>
@@ -27,8 +22,6 @@ export default {
         return {
             loaded: false,
             budgetID: '',
-            formatTypes,
-            formatType: formatTypes[0]
         }
     },
     created() {
@@ -46,7 +39,6 @@ export default {
             return this.$store.dispatch('saveBudget', {
                 budget: {
                     id: this.budgetID,
-                    formatType: this.formatType
                 },
             }).then((budget) => {
                 this.$store.dispatch('save')

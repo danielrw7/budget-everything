@@ -3,10 +3,11 @@
         <td class="name" @dblclick="editName">
             <input
                 ref="name"
+                type="text"
                 v-if="name.editing"
                 v-model="name.value"
                 @keyup.enter="saveName" />
-            <span v-else>
+            <span class="label" v-else>
                 {{ category.name }}
             </span>
         </td>
@@ -18,20 +19,33 @@
                     id
                 }
             }">
-                {{ format(balance) }}
+                {{ value }}
             </router-link>
         </td>
     </tr>
 </template>
 
+<style lang="scss" scoped>
+.label {
+    display: block;
+    height: 38px;
+    padding-top: 7px;
+    padding-left: 11px;
+}
+</style>
+
+
 <script>
-import { formats } from '@/numberFormat'
+import { format } from '@/numberFormat'
 
 export default {
     name: 'CategoryRow',
     props: {
-        budget: Object,
         id: String,
+        budget: {
+            type: Object,
+            default: {}
+        },
         category: {
             type: Object,
             default: {}
@@ -58,13 +72,14 @@ export default {
                 return this.category.balance - this.category.transactions[0].value
             }
             return this.category.balance - this.category.transactions.reduce((a, b) => a.value + b.value)
+        },
+        value() {
+            return format(this.balance, this.budget, {
+                category: this.category
+            })
         }
     },
     methods: {
-        format(value) {
-            console.log(this.budget.formatType || 'integer')
-            return formats[this.budget.formatType || 'integer'](value)
-        },
         editName() {
             this.name.editing = true
             this.$nextTick(() => {

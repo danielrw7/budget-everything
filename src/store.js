@@ -19,6 +19,12 @@ export default new Vuex.Store({
                 if (!budget.categories) {
                     budget.categories = []
                 }
+                if (!budget.interval) {
+                    budget.interval = 'month'
+                }
+                if (budget.formatTemplate === undefined && budget.formatUnit) {
+                    budget.formatTemplate = '{value} {formatUnit}'
+                }
                 return budget
             }
         }
@@ -28,6 +34,7 @@ export default new Vuex.Store({
             return Vue.set(state, 'budgets', budgets)
         },
         budget(state, budget) {
+            console.log('setting',budget.id,'to',budget)
             return Vue.set(state.budgets, budget.id, budget)
         }, 
         renameBudget(state, { oldID, newID }) {
